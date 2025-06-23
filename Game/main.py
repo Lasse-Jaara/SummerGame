@@ -1,78 +1,50 @@
 import pygame
-import sys
+import os
+import random
+# Here all variables and constants are defined, such as screen size, colors, etc.
+fps = 60
+width, height = 900, 500
+window = pygame.display.set_mode((width, height)) # Set the window size base of the WIDTH and HEIGHT variables
 
-pygame.init()
+# Here load images and other assets
+player_img = pygame.image.load(os.path.join('Assets', 'cursor.png'))
+castle_img = pygame.image.load(os.path.join('Assets', 'background.png'))
+mossya_img = pygame.image.load(os.path.join('Assets', 'enemy_1.png'))
 
-# === SETTINGS ===
-INTERNAL_WIDTH = 320
-INTERNAL_HEIGHT = 180
-FPS = 60
-AVAILABLE_RESOLUTIONS = [
-    (640, 360),
-    (1280, 720),
-    (1920, 1080)
-]
+pygame.init() # start all necessary systems (graphics, sound, input, etc.)
+pygame.mouse.set_visible(False) # Hide the mouse cursor
 
-# === START IN WINDOWED MODE ===
-current_resolution_index = 1  # Start at 1280x720
-windowed_resolution = AVAILABLE_RESOLUTIONS[current_resolution_index]
-is_fullscreen = False
 
-# Create display
-screen = pygame.display.set_mode(windowed_resolution, pygame.RESIZABLE)
-pygame.display.set_caption("Resolution + Fullscreen Template")
+def draw_window(mouse_x, mouse_y): # Draws the game window and updates the display and all assets -- pass here all things you want to draw
+    pygame.display.flip() # Update the display
+    window.fill((255, 255, 255)) # Fill the screen with white color *reset the frame*
+    window.blit(castle_img, (0, 0))  # Draw the background image
+    window.blit(mossya_img, (width // 2, height // 2))  # Draw the background image
+    window.blit(player_img, (mouse_x - player_img.get_width() * 0.5, mouse_y - player_img.get_height() * 0.1 )) # center mouse cursor to cursor tip on image
 
-# Internal surface (game world)
-game_surface = pygame.Surface((INTERNAL_WIDTH, INTERNAL_HEIGHT))
+def spawn_enemy():  # Function to spawn an enemy at a random position
+    pass
+        #x = random.randint(1,100)
+        #print(x)
+def main(): # Here you can add game logic, update positions, etc.
+    clock = pygame.time.Clock()
+    running = True
+    while running:
+        clock.tick(fps)  # Limit the frame rate to FPS
+        left_click = False
+        mouse_x, mouse_y = pygame.mouse.get_pos()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    left_click = True
 
-clock = pygame.time.Clock()
 
-# Example object
-player_color = (255, 0, 0)
-player_rect = pygame.Rect(50, 50, 16, 16)
+        spawn_enemy()
+        draw_window(mouse_x, mouse_y)  # Call the draw function to update the display
+    pygame.quit()
 
-def toggle_fullscreen():
-    global is_fullscreen, screen
-    is_fullscreen = not is_fullscreen
-    if is_fullscreen:
-        screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
-    else:
-        screen = pygame.display.set_mode(windowed_resolution, pygame.RESIZABLE)
 
-def change_resolution(delta):
-    global current_resolution_index, windowed_resolution, screen
-    current_resolution_index = (current_resolution_index + delta) % len(AVAILABLE_RESOLUTIONS)
-    windowed_resolution = AVAILABLE_RESOLUTIONS[current_resolution_index]
-    if not is_fullscreen:
-        screen = pygame.display.set_mode(windowed_resolution, pygame.RESIZABLE)
-
-# === MAIN LOOP ===
-while True:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
-
-        elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_F11:
-                toggle_fullscreen()
-            elif event.key == pygame.K_LEFT:
-                change_resolution(-1)
-            elif event.key == pygame.K_RIGHT:
-                change_resolution(1)
-            elif event.key == pygame.K_ESCAPE:
-                pygame.quit()
-                sys.exit()
-
-    # === DRAW TO INTERNAL GAME SURFACE ===
-    game_surface.fill((20, 20, 30))  # Background
-    pygame.draw.rect(game_surface, player_color, player_rect)
-
-    # === SCALE INTERNAL SURFACE TO FIT WINDOW ===
-    window_width, window_height = screen.get_size()
-    scaled_surface = pygame.transform.scale(game_surface, (window_width, window_height))
-    screen.blit(scaled_surface, (0, 0))
-
-    pygame.display.set_caption(f"Resolution: {window_width}x{window_height} | Press ←/→ to change, F11 to toggle fullscreen")
-    pygame.display.flip()
-    clock.tick(FPS)
+if __name__ == "__main__": # Starts the game if is file opened directly
+    main()

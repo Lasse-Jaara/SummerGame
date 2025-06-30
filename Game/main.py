@@ -1,7 +1,7 @@
 import pygame
 import os
 import random
-from mossya import Mossya  # <--- Import your enemy class
+from enemy import Enemy  # <--- Import your enemy class
 
 # Here all variables and constants are defined, such as screen size, colors, etc.
 fps = 60
@@ -17,8 +17,8 @@ can_enemy_spawn = True  # Variable to control enemy spawning
 player_img = pygame.image.load(os.path.join('Assets', 'cursor.png'))
 player_attack_img = pygame.image.load(os.path.join('Assets', 'cursor_clicked.png'))
 castle_img = pygame.image.load(os.path.join('Assets', 'background.png'))
-mossya_img = pygame.image.load(os.path.join('Assets', 'mossya.png'))
-mossya_hurted_img = pygame.image.load(os.path.join('Assets', 'mossya_hurted.png'))
+#mossya_img = pygame.image.load(os.path.join('Assets', 'mossya.png'))
+#mossya_hurted_img = pygame.image.load(os.path.join('Assets', 'mossya_hurted.png'))
 enemy_list = []
 
 SPAWN_EVENT = pygame.USEREVENT + 1 # Custom event for spawning enemies
@@ -32,13 +32,13 @@ def draw_window(mouse_pos, left_click, ): # Draws the game window and updates th
     pygame.display.flip() # Update the display
     window.fill((255, 255, 255)) # Fill the screen with white color *reset the frame*
     window.blit(castle_img, (0, 0))  # Draw the background image
-    window.blit(mossya_img, (width // 2, height // 2))  # Draw the background image
+
     for enemy in enemy_list:
-        if enemy.collidepoint((mouse_pos[0], mouse_pos[1])) and left_click:
-            window.blit(mossya_hurted_img, enemy.topleft)
-            print("Enemy clicked!")
-        else:
-            window.blit(mossya_img, enemy.topleft)
+            if enemy.pygame_rect.collidepoint((mouse_pos[0], mouse_pos[1])) and left_click:
+                enemy.take_damage(10)
+            if enemy.health <= 0:
+                enemy_list.remove(enemy)
+            enemy.draw(window)
     
     if(left_click):
         window.blit(player_attack_img, (mouse_pos[0] - player_img.get_width() * 0.5, mouse_pos[1] - player_img.get_height() * 0.1 )) # center mouse cursor to cursor tip on image
@@ -47,8 +47,10 @@ def draw_window(mouse_pos, left_click, ): # Draws the game window and updates th
 
 def spawn_enemy(count):  # Function to spawn an enemy at a random position
     for _ in range(count):  # load some enemies
-        enemy_rect = pygame.Rect(random.randint(spawn_x_min, spawn_x_max),random.randint(spawn_y_min, spawn_y_max),25, 25)
-        enemy_list.append(enemy_rect)
+        x = random.randint(spawn_x_min, spawn_x_max)
+        y = random.randint(spawn_y_min, spawn_y_max)
+        enemy = Enemy(pygame_rect=pygame.Rect(x, y, 25, 25))
+        enemy_list.append(enemy)
 
 def main(): # Here you can add game logic, update positions, etc.
     global can_enemy_spawn
@@ -66,12 +68,13 @@ def main(): # Here you can add game logic, update positions, etc.
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     left_click = True
-            if event.type == SPAWN_EVENT:
-                spawn_enemy(round(enemy_count_to_spawn)) # spawn enemies but still keep 20% increase every time
-                enemy_count_to_spawn += enemy_count_to_spawn * 0.2
+            if event.type == SPAWN_EVENT: # event that start every 5 seconds
+                if (len(enemy_list) < enemy_count_to_spawn): # if less enemies are than it would try spawn in arena
+                    spawn_enemy(round(enemy_count_to_spawn)) # spawn enemies but still keep 20% increase every time
+                    enemy_count_to_spawn += enemy_count_to_spawn * 0.15
 
         for enemy in enemy_list:
-            enemy.y += 1
+            enemy.move()
         #check_collisions(mouse_x, mouse_y, left_click)  # Check for collisions with enemies
         draw_window(mouse_pos, left_click)  # Call the draw function to update the display
     pygame.quit()

@@ -20,9 +20,9 @@ castle_img = pygame.image.load(os.path.join('Assets', 'background.png'))
 #mossya_img = pygame.image.load(os.path.join('Assets', 'mossya.png'))
 #mossya_hurted_img = pygame.image.load(os.path.join('Assets', 'mossya_hurted.png'))
 enemy_list = []
-
+spawn_time = 5
 SPAWN_EVENT = pygame.USEREVENT + 1 # Custom event for spawning enemies
-pygame.time.set_timer(SPAWN_EVENT, 5*1000)  # Every 1000x ms
+pygame.time.set_timer(SPAWN_EVENT, round(spawn_time*1000))  # Every 1000x ms
 
 pygame.init() # start all necessary systems (graphics, sound, input, etc.)
 pygame.mouse.set_visible(False) # Hide the mouse cursor
@@ -53,10 +53,11 @@ def spawn_enemy(count):  # Function to spawn an enemy at a random position
         enemy_list.append(enemy)
 
 def main(): # Here you can add game logic, update positions, etc.
-    global can_enemy_spawn
+    global spawn_time
     clock = pygame.time.Clock()
     running = True
-    enemy_count_to_spawn = 2  # Number of enemies to spawn initially
+    enemy_count = 2  # Number of enemies to spawn initially
+    spawned_round = 0
     while running:
         clock.tick(fps)  # Limit the frame rate to FPS
         left_click = False
@@ -69,12 +70,19 @@ def main(): # Here you can add game logic, update positions, etc.
                 if event.button == 1:
                     left_click = True
             if event.type == SPAWN_EVENT: # event that start every 5 seconds
-                if (len(enemy_list) < enemy_count_to_spawn): # if less enemies are than it would try spawn in arena
-                    spawn_enemy(round(enemy_count_to_spawn)) # spawn enemies but still keep 20% increase every time
-                    enemy_count_to_spawn += enemy_count_to_spawn * 0.15
+                if (len(enemy_list) < enemy_count): # if less enemies are than it would try spawn in arena
+                    spawned_round += 1
+                    spawn_enemy(round(enemy_count)) # spawn enemies but still keep 20% increase every time
+                    enemy_count += enemy_count * 0.10
+                    spawn_time += spawn_time * 0.25
 
+        castle_rect = pygame.Rect(0, height-90, width, 90)
+        #pygame.draw.rect(window, (255, 0, 0), castle_rect, 2)
         for enemy in enemy_list:
-            enemy.move()
+            if castle_rect.colliderect(enemy.pygame_rect):
+                pass
+            else:
+                enemy.move()
         #check_collisions(mouse_x, mouse_y, left_click)  # Check for collisions with enemies
         draw_window(mouse_pos, left_click)  # Call the draw function to update the display
     pygame.quit()

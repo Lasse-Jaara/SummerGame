@@ -1,7 +1,7 @@
 import pygame
 import os
 import random
-from enemy import Enemy  # <--- Import your enemy class
+#from enemy import Enemy  # <--- Import your enemy class
 
 # Here all variables and constants are defined, such as screen size, colors, etc.
 fps = 60

@@ -23,6 +23,7 @@ The goal of this prototype is to:
 
 1. Make sure you have **Python** installed.
    Open **Command Prompt (CMD)** and test the required dependency:
+   ```bash
    python --version
    
 2. Open **Command Prompt (CMD)** and install the required dependency:

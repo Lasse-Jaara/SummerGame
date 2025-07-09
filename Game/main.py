@@ -21,6 +21,7 @@ player_img = pygame.image.load(os.path.join('Assets', 'cursor.png'))
 player_attack_img = pygame.image.load(os.path.join('Assets', 'cursor_clicked.png'))
 castle_img = pygame.image.load(os.path.join('Assets', 'background.png'))
 cursor_click_sound = pygame.mixer.Sound(os.path.join('Assets', 'SD_cursor_clicked.wav'))
+cursor_click_sound.set_volume(0.4)
 
 # === Enemy Settings ===
 enemy_list = []

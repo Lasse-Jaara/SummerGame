@@ -11,11 +11,11 @@ mossya_hurted_img = pygame.image.load(os.path.join('Assets', 'mossya_hurted.png'
 
 mossya_hurted_sound = pygame.mixer.Sound(os.path.join('Assets', 'SD_mossya_hurt.wav'))
 mossya_death_sound = pygame.mixer.Sound(os.path.join('Assets', 'SD_mossya_death.wav'))  # Currently unused
-
+mossya_hurted_sound.set_volume(0.3)
+mossya_death_sound.set_volume(0.1)
 class Enemy:
-    #Represents a simple enemy with health, damage, and animation
     hurt_sound = mossya_hurted_sound
-
+    death_sound = mossya_death_sound
     def __init__(self, pygame_rect=pygame.Rect(0, 0, 25, 25), health=20,
                  image=mossya_img, hurted_image=mossya_hurted_img):
 
@@ -31,6 +31,8 @@ class Enemy:
         self.hurted = True
         self.hurt_timer = 5
         Enemy.hurt_sound.play()
+        if self.health <= 0:
+            Enemy.death_sound.play()
 
     def draw(self, window):
         if self.hurt_timer > 0:

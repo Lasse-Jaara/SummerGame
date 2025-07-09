@@ -19,7 +19,7 @@ The purpose/goal of this project is to:
 - Build a playable version for testing
 - Learn to use **pygame**
 
-## 📦 How to Run on Visual Studio Code
+## 🚀 How to Run on Visual Studio Code
 
 1. Make sure you have **Python** installed.
    Open **Command Prompt (CMD)** and test the required dependency:

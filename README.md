@@ -12,9 +12,9 @@ This project is in the **prototype stage**, meaning it's an early version of the
 - **pip**
 - **pygame-ce 2.5.5**
 
-## 🎯 Purpose
+## 🎯 Purpose/Goal
 
-The goal of this prototype is to:
+The purpose/goal of this project is to:
 - Experiment with core game mechanics of prototype
 - Build a playable version for testing
 - Learn to use **pygame**

@@ -5,15 +5,21 @@ import os
 pygame.init()
 pygame.mixer.init()
 
-# === Assets ===
-mossya_img = pygame.image.load(os.path.join('Assets', 'mossya.png'))
-mossya_hurted_img = pygame.image.load(os.path.join('Assets', 'mossya_hurted.png'))
 
-mossya_hurted_sound = pygame.mixer.Sound(os.path.join('Assets', 'SD_mossya_hurt.wav'))
-mossya_death_sound = pygame.mixer.Sound(os.path.join('Assets', 'SD_mossya_death.wav'))  # Currently unused
+# Get the absolute path to the directory where this script is located
+script_dir = os.path.dirname(os.path.abspath(__file__))
+assets_dir = os.path.join(script_dir, 'Assets')
+
+# === Assets ===
+mossya_img = pygame.image.load(os.path.join(assets_dir, 'mossya.png'))
+mossya_hurted_img = pygame.image.load(os.path.join(assets_dir, 'mossya_hurted.png'))
+
+mossya_hurted_sound = pygame.mixer.Sound(os.path.join(assets_dir, 'SD_mossya_hurt.wav'))
+mossya_death_sound = pygame.mixer.Sound(os.path.join(assets_dir, 'SD_mossya_death.wav'))  # Currently unused
 mossya_hurted_sound.set_volume(0.3)
 mossya_death_sound.set_volume(0.1)
-class Enemy:
+
+class Mossya:
     hurt_sound = mossya_hurted_sound
     death_sound = mossya_death_sound
     def __init__(self, pygame_rect=pygame.Rect(0, 0, 25, 25), health=20,
@@ -25,14 +31,15 @@ class Enemy:
         self.pygame_rect = pygame_rect
         self.hurted = False
         self.hurt_timer = 0
+        self.attack_speed = 5
 
     def take_damage(self, amount):
         self.health -= amount
         self.hurted = True
         self.hurt_timer = 5
-        Enemy.hurt_sound.play()
+        Mossya.hurt_sound.play()
         if self.health <= 0:
-            Enemy.death_sound.play()
+            Mossya.death_sound.play()
 
     def draw(self, window):
         if self.hurt_timer > 0:
@@ -41,5 +48,8 @@ class Enemy:
         else:
             window.blit(self.image, self.pygame_rect)
 
-    def move(self, speed=1):
+    def move(self, speed=1): # needs be 1,2,3,etc not 0,5 etc. You cant move object half pixsel
         self.pygame_rect.y += speed
+
+    def attack(self, attack_speed=1):
+        pass

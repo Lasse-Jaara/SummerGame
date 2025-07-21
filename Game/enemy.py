@@ -22,8 +22,7 @@ mossya_death_sound.set_volume(0.1)
 class Mossya:
     hurt_sound = mossya_hurted_sound
     death_sound = mossya_death_sound
-    def __init__(self, pygame_rect=pygame.Rect(0, 0, 25, 25), health=20,
-                 image=mossya_img, hurted_image=mossya_hurted_img):
+    def __init__(self, pygame_rect=pygame.Rect(0, 0, 25, 25), health=20,image=mossya_img, hurted_image=mossya_hurted_img):
 
         self.health = health
         self.image = image
@@ -31,7 +30,7 @@ class Mossya:
         self.pygame_rect = pygame_rect
         self.hurted = False
         self.hurt_timer = 0
-        self.attack_speed = 5
+        self.died_to_castle = False
 
     def take_damage(self, amount):
         self.health -= amount
@@ -47,9 +46,10 @@ class Mossya:
             self.hurt_timer -= 1
         else:
             window.blit(self.image, self.pygame_rect)
-
+        #pygame.draw.rect(window, (255, 0, 255), self.pygame_rect, 2)
     def move(self, speed=1): # needs be 1,2,3,etc not 0,5 etc. You cant move object half pixsel
         self.pygame_rect.y += speed
 
-    def attack(self, attack_speed=1):
-        pass
+    def die_to_castle(self):
+        self.died_to_castle = True
+        self.take_damage(100)

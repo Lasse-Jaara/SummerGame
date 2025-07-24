@@ -52,4 +52,4 @@ class Mossya:
 
     def die_to_castle(self):
         self.died_to_castle = True
-        self.take_damage(100)
+        self.take_damage(1000)

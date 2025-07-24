@@ -2,9 +2,9 @@
 
 **SummerGame** is a prototype built using **pygame-ce 2.5.5**.
 
-## 🚧 Current Status: Prototype
+## 📦 Current Status: Archived
 
-This project is in the **prototype stage**, meaning it's an early version of the game focused on testing core mechanics and gameplay ideas. Features, graphics, and content are subject to major changes.
+This project is in the **Archived stage**, meaning it's development is now archived, with no plans for further updates — but it remains available for reference or inspiration.
 
 ## 🛠️ Tech Stack
 
@@ -18,6 +18,10 @@ The purpose/goal of this project is to:
 - Experiment with core game mechanics of prototype
 - Build a playable version for testing
 - Learn to use **pygame**
+
+## 🚀 How to Run on Visual Studio Code
+1. Run main.exe in SummerGame\Game\dist
+2. Get it also from https://jupresson.itch.io/summergame
 
 ## 🚀 How to Run on Visual Studio Code
 

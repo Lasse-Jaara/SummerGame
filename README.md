@@ -19,7 +19,7 @@ The purpose/goal of this project is to:
 - Build a playable version for testing
 - Learn to use **pygame**
 
-## 🚀 How to Run on Visual Studio Code
+## 🚀 How to Run on .exe
 1. Run main.exe in SummerGame\Game\dist
 2. Get it also from https://jupresson.itch.io/summergame
 

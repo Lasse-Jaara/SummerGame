@@ -257,7 +257,7 @@ def draw_upgrade_screen(left_click,mouse_pos,timer,can_upgrade_size):
 
     if cursor_multiplier >= 16:
         can_upgrade_size = False
-    print(cursor_multiplier)
+    #print(cursor_multiplier)
     # Render text
     text = font_small.render("Cursor size", True, (0, 0, 0))
     text_rect = text.get_rect()
@@ -350,10 +350,10 @@ def main():
                         enemy_count += enemy_count * 0.25
                         spawn_time += spawn_time * 0.15
                 # Debug
-                elif event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_m:
-                        spawn_xp(20,WIDTH//2,HEIGHT//2)
-                        print("M key was pressed")
+                #elif event.type == pygame.KEYDOWN:
+                    #if event.key == pygame.K_m:
+                        #spawn_xp(20,WIDTH//2,HEIGHT//2)
+                        #print("M key was pressed")
             # rect = pygame.Rect(x, y, width, height)
             castle_rect = pygame.Rect(0, HEIGHT - 60, WIDTH, 60)
             castle_tower_left_rect = pygame.Rect(0, HEIGHT - 90, 90, 90)
